@@ -1,0 +1,26 @@
+#!/bin/zsh
+
+# install in mac os arm
+# brew uninstall llvm
+# brew install llvm@17
+# brew link llvm@17 --force
+
+# 设置完整的环境变量
+export PATH="/opt/homebrew/opt/llvm@17/bin:$PATH"
+export LDFLAGS="-L/opt/homebrew/opt/llvm@17/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/llvm@17/include"
+export CGO_ENABLED=1
+export CC=/opt/homebrew/opt/llvm@17/bin/clang
+export CXX=/opt/homebrew/opt/llvm@17/bin/clang++
+
+# 使用 llvm-config 获取正确的标志
+export CGO_CPPFLAGS="$(llvm-config --cppflags)"
+export CGO_CXXFLAGS="$(llvm-config --cxxflags)"
+export CGO_LDFLAGS="$(llvm-config --ldflags --libs all)"
+export CGO_CFLAGS="$(llvm-config --cflags)"
+
+# 验证环境变量
+echo "LLVM Include Dir: $(llvm-config --includedir)"
+echo "CGO_CFLAGS: $CGO_CFLAGS"
+echo "CGO_CPPFLAGS: $CGO_CPPFLAGS"
+
